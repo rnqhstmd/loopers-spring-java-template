@@ -24,12 +24,12 @@ public class PointService {
 
     public Point getPoint(String userId) {
         return pointRepository.findByUserId(userId)
-                .orElse(null);
+                .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND, "포인트를 찾을 수 없습니다."));
     }
 
     public Long getPointAmount(String userId) {
-        Point point = getPoint(userId);
-        return point != null ? point.getAmount() : null;
+        Point point = getPoint(userId);  // 여기서 예외 발생 가능
+        return point.getAmount();
     }
 
     @Transactional
