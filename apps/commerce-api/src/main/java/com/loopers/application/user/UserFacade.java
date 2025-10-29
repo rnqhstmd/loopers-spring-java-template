@@ -17,4 +17,9 @@ public class UserFacade {
         User user = userService.signUp(userId, email, birthDate, gender);
         return UserInfo.from(user);
     }
+
+    public UserInfo getUserInfo(String userId) {
+        User user = userService.getUserByUserId(userId);
+        return UserInfo.from(user);
+    }
 }
