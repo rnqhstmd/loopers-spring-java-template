@@ -106,5 +106,48 @@ class UserServiceIntegrationTest {
             );
         }
     }
+
+    @DisplayName("내 정보 조회를 할 때,")
+    @Nested
+    class GetUserByUserId {
+
+        @DisplayName("해당 ID의 회원이 존재할 경우, 회원 정보가 반환된다.")
+        @Test
+        void returnsUserInfo_whenUserExists() {
+            // arrange
+            String userId = "testuser01";
+            String email = "test@example.com";
+            String birthDate = "1990-01-01";
+            Gender gender = Gender.MALE;
+
+            userService.signUp(userId, email, birthDate, gender);
+
+            // act
+            User result = userService.getUserByUserId(userId);
+
+            // assert
+            assertAll(
+                    () -> assertThat(result).isNotNull(),
+                    () -> assertThat(result.getUserIdValue()).isEqualTo(userId),
+                    () -> assertThat(result.getEmailValue()).isEqualTo(email),
+                    () -> assertThat(result.getBirthDateValue()).isEqualTo(birthDate),
+                    () -> assertThat(result.getGender()).isEqualTo(gender)
+            );
+        }
+
+        @DisplayName("해당 ID의 회원이 존재하지 않을 경우, NOT_FOUND 예외가 발생한다.")
+        @Test
+        void throwsNotFoundException_whenUserDoesNotExist() {
+            // arrange
+            String nonExistentUserId = "nonexistent";
+
+            // act & assert
+            CoreException exception = assertThrows(CoreException.class, () -> {
+                userService.getUserByUserId(nonExistentUserId);
+            });
+
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.NOT_FOUND);
+        }
+    }
 }
 
