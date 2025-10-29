@@ -26,10 +26,6 @@ public class PointV1Controller implements PointV1ApiSpec {
         }
 
         Long amount = pointFacade.getPointAmount(userId);
-        if (amount == null) {
-            throw new CoreException(ErrorType.NOT_FOUND, "포인트를 찾을 수 없습니다.");
-        }
-
         return ApiResponse.success(PointV1Dto.PointResponse.of(userId, amount));
     }
 
