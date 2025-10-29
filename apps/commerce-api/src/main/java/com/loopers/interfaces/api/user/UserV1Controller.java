@@ -5,10 +5,7 @@ import com.loopers.application.user.UserInfo;
 import com.loopers.interfaces.api.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -30,5 +27,16 @@ public class UserV1Controller implements UserV1ApiSpec {
                 request.gender()
         );
         return ApiResponse.success(UserV1Dto.UserResponse.from(userInfo));
+    }
+
+    @GetMapping("/me")
+    @Override
+    public ApiResponse<UserV1Dto.UserResponse> getMyInfo(
+            @RequestHeader("X-USER-ID") String userId
+    ) {
+        UserInfo userInfo = userFacade.getUserInfo(userId);
+        UserV1Dto.UserResponse response = UserV1Dto.UserResponse.from(userInfo);
+
+        return ApiResponse.success(response);
     }
 }
