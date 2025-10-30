@@ -48,19 +48,6 @@ public class Point extends BaseEntity {
         this.amount += amount;
     }
 
-    public void use(Long amount) {
-        if (amount == null) {
-            throw new CoreException(ErrorType.BAD_REQUEST, "포인트 금액은 필수입니다.");
-        }
-        if (amount <= 0) {
-            throw new CoreException(ErrorType.BAD_REQUEST, "사용 금액은 0보다 커야 합니다.");
-        }
-        if (this.amount < amount) {
-            throw new CoreException(ErrorType.BAD_REQUEST, "포인트 잔액이 부족합니다.");
-        }
-        this.amount -= amount;
-    }
-
     private void validateUserId(String userId) {
         if (userId == null || userId.isBlank()) {
             throw new CoreException(ErrorType.BAD_REQUEST, "사용자 ID는 비어있을 수 없습니다.");

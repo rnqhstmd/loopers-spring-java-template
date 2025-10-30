@@ -39,12 +39,4 @@ public class PointService {
         point.charge(amount);
         pointRepository.save(point);
     }
-
-    @Transactional
-    public void usePoint(String userId, Long amount) {
-        Point point = pointRepository.findByUserId(userId)
-                .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND, "포인트를 찾을 수 없습니다."));
-        point.use(amount);
-        pointRepository.save(point);
-    }
 }
