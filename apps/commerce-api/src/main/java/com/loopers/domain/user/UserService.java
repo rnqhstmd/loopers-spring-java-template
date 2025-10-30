@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -22,7 +23,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    @Transactional(readOnly = true)
     public User getUserByUserId(String userId) {
         return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND, "사용자를 찾을 수 없습니다."));
