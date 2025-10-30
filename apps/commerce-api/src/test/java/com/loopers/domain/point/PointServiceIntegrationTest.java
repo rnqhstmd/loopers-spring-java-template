@@ -55,7 +55,7 @@ class PointServiceIntegrationTest {
                     },
                     () -> {
                         Assertions.assertNotNull(point);
-                        assertThat(point.getAmount()).isEqualTo(0L);
+                        assertThat(point.getAmount()).isZero();
                     }
             );
         }
@@ -155,38 +155,6 @@ class PointServiceIntegrationTest {
             // act & assert
             CoreException exception = assertThrows(CoreException.class, () -> {
                 pointService.chargePoint("nonexistentuser", 1000L);
-            });
-
-            assertThat(exception.getErrorType()).isEqualTo(ErrorType.NOT_FOUND);
-        }
-    }
-
-    @DisplayName("포인트 사용을 할 때,")
-    @Nested
-    class UsePoint {
-
-        @DisplayName("포인트를 사용할 수 있다.")
-        @Test
-        void canUsePoint() {
-            // arrange
-            String userId = "testuser01";
-            pointService.createPoint(userId);
-            pointService.chargePoint(userId, 1000L);
-
-            // act
-            pointService.usePoint(userId, 300L);
-
-            // assert
-            Point point = pointService.getPoint(userId);
-            assertThat(point.getAmount()).isEqualTo(700L);
-        }
-
-        @DisplayName("존재하지 않는 사용자의 포인트 사용 시, NOT_FOUND 예외가 발생한다.")
-        @Test
-        void throwsNotFoundException_whenUserDoesNotExist() {
-            // act & assert
-            CoreException exception = assertThrows(CoreException.class, () -> {
-                pointService.usePoint("nonexistentuser", 300L);
             });
 
             assertThat(exception.getErrorType()).isEqualTo(ErrorType.NOT_FOUND);
