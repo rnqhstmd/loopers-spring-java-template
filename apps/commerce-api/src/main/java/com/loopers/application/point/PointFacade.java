@@ -22,11 +22,6 @@ public class PointFacade {
         return pointService.getPoint(userId);
     }
 
-    @Transactional(readOnly = true)
-    public Long getPointAmount(String userId) {
-        return pointService.getPointAmount(userId);
-    }
-
     @Transactional
     public void chargePoint(String userId, Long amount) {
         pointService.chargePoint(userId, amount);
